@@ -1,6 +1,7 @@
 <?php
 use App\Livewire\Auth\Register;
 use App\Models\User;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
 
 it('renders successfully', function () {
@@ -43,3 +44,18 @@ test('validation rules', function ($f) {
     'password::required' => (object) ['field' => 'password', 'value' => '', 'rule' => 'required'],
 
 ]);
+
+it('should be able to send a welcome notification for the new user', function () {
+    Notification::fake();
+
+    Livewire::test(Register::class)
+        ->set('name', 'John dee')
+        ->set('email', 'contato@gmail.com')
+        ->set('email_confirmation', 'contato@gmail.com')
+        ->set('password', 'password')->call('submit');
+
+    $user = User::whereEmail('contato@gmail.com')->first();
+
+    Notification::assertSentTo($user, \App\Notifications\WelcomeNotification::class);
+
+});
