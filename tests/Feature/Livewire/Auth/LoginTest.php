@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Auth\Login;
+use App\Models\User;
 use Livewire\Livewire;
 
 it('renders successfully', function () {
@@ -10,7 +11,7 @@ it('renders successfully', function () {
 
 it('should be able to login a user', function () {
 
-    $user = \App\Models\User::query()->create([
+    $user = User::query()->create([
         'name'     => 'John dee',
         'email'    => 'contato@gmail.com',
         'password' => bcrypt('password'),
@@ -30,5 +31,21 @@ it('should show an error if the credentials are invalid', function () {
         ->set('email', 'contato@gmail.com')
         ->set('password', 'password')
         ->call('login')
-        ->assertHasNoErrors(['invalid_credentials']);
+        ->assertHasErrors(['invalidCredentials']);
+});
+
+it('should make sure that rate limiting is blocking after 5 attempts', function () {
+    $user = User::factory()->create();
+
+    for ($i = 0; $i < 5; $i++) {
+        Livewire::test(Login::class)
+            ->set('email', $user->email)
+            ->set('password', 'wrong-password')
+            ->call('login')->assertHasErrors(['invalidCredentials']);
+    }
+
+    Livewire::test(Login::class)
+        ->set('email', $user->email)
+        ->set('password', 'wrong-password')
+        ->call('login')->assertHasErrors(['rateLimiter']);
 });
