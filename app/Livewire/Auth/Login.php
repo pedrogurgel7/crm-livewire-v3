@@ -26,7 +26,7 @@ class Login extends Component
         if (Auth::attempt($this->only('email', 'password'))) {
             $this->redirect('/');
         } else {
-            $this->addError('invalidCredentials', 'Email or Password is incorrect');
+            $this->addError('invalidCredentials', trans('auth.failed'));
         }
 
     }

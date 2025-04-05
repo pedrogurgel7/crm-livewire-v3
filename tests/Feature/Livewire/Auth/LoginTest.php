@@ -17,7 +17,6 @@ it('should be able to login a user', function () {
     ]);
 
     Livewire::test(Login::class)
-
         ->set('email', 'contato@gmail.com')
         ->set('password', 'password')
         ->call('login')
@@ -25,4 +24,11 @@ it('should be able to login a user', function () {
 
     expect(auth()->check())->and(auth()->user()->id)->toBe($user->id);
 
+});
+it('should show an error if the credentials are invalid', function () {
+    Livewire::test(Login::class)
+        ->set('email', 'contato@gmail.com')
+        ->set('password', 'password')
+        ->call('login')
+        ->assertHasNoErrors(['invalid_credentials']);
 });
