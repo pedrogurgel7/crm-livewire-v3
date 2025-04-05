@@ -17,7 +17,7 @@ it('should be able to register a user', function () {
         ->set('email_confirmation', 'contato@gmail.com')
         ->set('password', 'password')->call('submit')
 
-        ->assertHasNoErrors()->assertRedirect('/');
+        ->assertHasNoErrors()->assertRedirect(route('dashboard'));
 
     \Pest\Laravel\assertDatabaseHas('users', [
         'name' => 'John dee',
