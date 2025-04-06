@@ -1,12 +1,19 @@
 <?php
 
 use App\Livewire\Auth\{Login, Register};
-use Livewire\Volt\Volt;
+use App\Livewire\Welcome;
 
 //Volt::route('/', 'users.index');
 
-Route::get('/', \App\Livewire\Welcome::class)->name('dashboard');
+Route::get('/register', Register::class)->name('register');
+Route::get('/login', Login::class)->name('login');
+Route::get('/logout', function () {
+    auth()->logout();
 
-Route::get('register', Register::class)->name('auth.register');
-Route::get('login', Login::class)->name('auth.login');
-Route::get('/logout', fn () => auth()->logout());
+    return redirect()->route('login');
+})->name('logout');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/', Welcome::class)->name('dashboard');
+
+});

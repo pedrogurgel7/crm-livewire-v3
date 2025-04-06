@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Auth;
 
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\{Auth, RateLimiter};
 use Illuminate\View\View;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -23,10 +23,19 @@ class Login extends Component
     {
         $this->validate();
 
+        if (RateLimiter::tooManyAttempts(request()->ip(), 5)) {
+            $this->addError('rateLimiter', trans('auth.throttle', [
+                'seconds' => RateLimiter::availableIn(request()->ip()),
+            ]));
+        }
+
         if (Auth::attempt($this->only('email', 'password'))) {
             $this->redirect('/');
         } else {
-            $this->addError('invalidCredentials', 'Email or Password is incorrect');
+
+            RateLimiter::hit(request()->ip());
+
+            $this->addError('invalidCredentials', trans('auth.failed'));
         }
 
     }
