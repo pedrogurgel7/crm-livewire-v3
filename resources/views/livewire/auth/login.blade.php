@@ -17,9 +17,14 @@
         <x-input label="Email" wire:model="email"/>
         <x-input label="Password" wire:model="password" type="password"/>
 
+
         <x-slot:actions>
-            <x-button label="Reset"/>
-            <x-button label="Register" class="btn-primary" type="submit" spinner="login"/>
+            <div class="w-full flex justify-between items-center">
+                <a wire:navigate href="{{route('register')}}" class="link link-primary">I want to create an account</a>
+                <x-button label="Login" class="btn-primary" type="submit" spinner="login"/>
+            </div>
         </x-slot:actions>
+
+
     </x-form>
 </x-card>
