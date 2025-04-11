@@ -5,7 +5,9 @@
         <x-input label="Email" wire:model="email"/>
         <x-input label="Password" wire:model="password" type="password"/>
 
-
+        <div class="w-full text-right">
+            <a wire:navigate href="{{route('forgot-password')}}" class="link link-primary">Forgot password?</a>
+        </div>
         <x-slot:actions>
             <div class="w-full flex justify-between items-center">
                 <a wire:navigate href="{{route('register')}}" class="link link-primary">I want to create an account</a>

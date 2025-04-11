@@ -1,4 +1,4 @@
-<x-card title="Register" class="w-full max-w-sm mx-auto mt-11">
+<x-card title="Password Recovery" class="w-full max-w-sm mx-auto mt-11">
     @error('email')
     {{ $message }}
     @enderror

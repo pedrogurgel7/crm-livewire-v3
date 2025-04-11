@@ -1,4 +1,5 @@
 <x-card title="Register" class="w-full max-w-sm mx-auto mt-11">
+
     <x-form wire:submit="submit">
         <x-input label="Name" wire:model="name"/>
         <x-input label="Email" wire:model="email"/>
