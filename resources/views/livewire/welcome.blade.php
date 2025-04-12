@@ -1,4 +1,10 @@
 <article class="prose lg:prose-xl">
+    @session('status')
+
+    <h1>{{session('status')}}</h1>
+
+    @endsession
+
     <h1>Garlic bread with cheese: What the science tells us</h1>
     <p>
         For years parents have espoused the health benefits of eating garlic bread with cheese to their

@@ -6,13 +6,18 @@ use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\{Hash, Password};
 use Illuminate\Support\Str;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 
 class ResetPassword extends Component
 {
     public ?string $token;
 
+    #[Rule(['required', 'string', 'min:8', 'confirmed'])]
     public ?string $email;
+
+    #[Rule(['required', 'string', 'min:8', 'same:email'])]
+    public ?string $email_confirmation;
 
     public ?string $password;
 
@@ -31,6 +36,8 @@ class ResetPassword extends Component
 
     public function submit()
     {
+        $this->validate();
+
         $status = Password::reset(
             ['email' => $this->email, 'password' => $this->password, 'password_confirmation' => $this->password_confirmation, 'token' => $this->token],
             function (User $user, string $password) {
@@ -51,5 +58,10 @@ class ResetPassword extends Component
             back()->withErrors(['email' => [__($status)]]);
         }
 
+    }
+
+    public function obfuscatedEmail(): String
+    {
+        return obfuscate_email($this->email);
     }
 }
