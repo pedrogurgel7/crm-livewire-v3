@@ -3,8 +3,11 @@
     {{ $message }}
     @enderror
 
-
-    {{$message}}
+    @if("$message")
+        <x-alert icon="o-check" class="alert-success mb-4">
+            {{$message}}
+        </x-alert>
+    @endif
 
 
     <x-form wire:submit="sendResetLink">
