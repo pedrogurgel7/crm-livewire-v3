@@ -20,3 +20,12 @@ it('should be able to give an user a permission to do something', function () {
         'permission_id' => Permission::where('key', 'be an admin')->first()->id,
     ]);
 });
+
+it('should be have a seed for permissions', function () {
+
+    $this->seed(\Database\Seeders\PermissionSeeder::class);
+
+    assertDatabaseHas('permissions', [
+        'key' => 'be an admin',
+    ]);
+});
